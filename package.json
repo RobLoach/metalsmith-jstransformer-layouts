@@ -1,5 +1,5 @@
 {
-  "name": "metalsmith-jstransformer-templates",
+  "name": "metalsmith-jstransformer-layouts",
   "version": "0.0.1",
   "description": "Metalsmith JSTransformer Templates Plugin",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/RobLoach/metalsmith-jstransformer-templates"
+    "url": "git://github.com/RobLoach/metalsmith-jstransformer-layouts"
   },
   "keywords": [
     "metalsmith",
@@ -19,9 +19,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RobLoach/metalsmith-jstransformer-templates/issues"
+    "url": "https://github.com/RobLoach/metalsmith-jstransformer-layouts/issues"
   },
-  "homepage": "https://github.com/RobLoach/metalsmith-jstransformer-templates",
+  "homepage": "https://github.com/RobLoach/metalsmith-jstransformer-layouts",
   "dependencies": {
     "extend": "^3.0.0",
     "jstransformer": "^0.0.2",

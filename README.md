@@ -1,13 +1,13 @@
-# Metalsmith JSTransformer Templates Plugin [![NPM version](https://img.shields.io/npm/v/metalsmith-jstransformer-templates.svg)](https://www.npmjs.org/package/metalsmith-jstransformer-templates)
+# Metalsmith JSTransformer Layouts Plugin [![NPM version](https://img.shields.io/npm/v/metalsmith-jstransformer-layouts.svg)](https://www.npmjs.org/package/metalsmith-jstransformer-layouts)
 
-[![Build Status](https://img.shields.io/travis/RobLoach/metalsmith-jstransformer-templates/master.svg)](https://travis-ci.org/RobLoach/metalsmith-jstransformer-templates)
-[![Dependency Status](https://david-dm.org/RobLoach/metalsmith-jstransformer-templates.png)](https://david-dm.org/RobLoach/metalsmith-jstransformer-templates)
+[![Build Status](https://img.shields.io/travis/RobLoach/metalsmith-jstransformer-layouts/master.svg)](https://travis-ci.org/RobLoach/metalsmith-jstransformer-layouts)
+[![Dependency Status](https://david-dm.org/RobLoach/metalsmith-jstransformer-layouts.png)](https://david-dm.org/RobLoach/metalsmith-jstransformer-layouts)
 
-[Metalsmith](http://metalsmith.io) plugin to process templates with any [JSTransformer](http://github.com/jstransformers).
+[Metalsmith](http://metalsmith.io) plugin to process layouts with any [JSTransformer](http://github.com/jstransformers).
 
 ## Installation
 
-    npm install --save metalsmith-jstransformer-templates
+    npm install --save metalsmith-jstransformer-layouts
 
 ## Usage
 
@@ -18,7 +18,7 @@ If you are using the command-line version of Metalsmith, you can install via npm
 ```json
 {
   "plugins": {
-    "metalsmith-jstransformer-templates-templates": {}
+    "metalsmith-jstransformer-layouts": {}
   }
 }
 ```
@@ -28,26 +28,26 @@ If you are using the command-line version of Metalsmith, you can install via npm
 If you are using the JS Api for Metalsmith, then you can require the module and add it to your `.use()` directives:
 
 ```js
-var templates = require('metalsmith-jstransformer-templates');
+var layouts = require('metalsmith-jstransformer-layouts');
 
-metalsmith.use(templates());
+metalsmith.use(layouts());
 ```
 
 ### Convention
 
-Within the metadata of files in your `src` directory, declare which template the file should use:
+Within the metadata of files in your `src` directory, declare which layout to use:
 
 #### index.html
 ``` yaml
 ---
-template: _template.jade
+layout: _layout.jade
 ---
 <p>This is my site!</p>
 ```
 
-Use the extension of the template file to declare which engine the template should use:
+Use the extension of the layout file to declare the template engine:
 
-#### _template.jade
+#### _layout.jade
 ``` jade
 ---
 pretty: true
