@@ -20,4 +20,5 @@ function test (name, options) {
 describe('metalsmith-jstransformer', function () {
   test('basic')
   test('include')
+  test('multiple')
 })

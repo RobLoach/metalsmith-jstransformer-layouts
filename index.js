@@ -10,21 +10,23 @@ var transformers = {}
  * @return The JSTransformer; null if it doesn't exist.
  */
 function getTransformer (name) {
-  if (listOfJsTransformers.indexOf(name) >= 0) {
-    if (transformers[name]) {
-      return transformers[name]
-    }
-    transformers[name] = jstransformer(require('jstransformer-' + name))
+  if (transformers[name]) {
     return transformers[name]
   }
+  if (listOfJsTransformers.indexOf(name) >= 0) {
+    transformers[name] = jstransformer(require('jstransformer-' + name))
+  } else {
+    transformers[name] = false
+  }
+  return transformers[name]
 }
 
 module.exports = function (opts) {
   return function (files, metalsmith, done) {
     var layouts = {}
     var processFiles = []
-    var file
-    var layout
+    var file = ''
+    var layout = ''
 
     // Retrieve all layouts.
     for (file in files) {
@@ -49,10 +51,11 @@ module.exports = function (opts) {
         var transformer = getTransformer(extensions[1])
         if (transformer) {
           // Get the layout input and construct the layout options.
-          var input = layout.contents
+          var filename = path.join(metalsmith._directory, metalsmith._source, file)
+          var input = layout.contents.toString()
           var locals = extend({}, layout, files[file], {
-            contents: files[file].contents,
-            filename: path.join(metalsmith._directory, metalsmith._source, file)
+            contents: files[file].contents.toString(),
+            filename: filename
           })
           var output = transformer.render(input, locals, locals)
           files[file].contents = new Buffer(output.body)

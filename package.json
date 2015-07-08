@@ -25,12 +25,14 @@
   "dependencies": {
     "extend": "^3.0.0",
     "jstransformer": "^0.0.2",
+    "jstransformer-nunjucks": "0.0.1",
     "jstransformer-styl": "^0.1.0",
     "list-of-jstransformers": "0.0.3"
   },
   "devDependencies": {
     "assert-dir-equal": "^1.0.1",
     "jstransformer-jade": "^0.0.3",
+    "jstransformer-swig": "^0.1.2",
     "metalsmith": "^1.7.0",
     "mocha": "^2.2.5",
     "standard": "^4.3.3"
