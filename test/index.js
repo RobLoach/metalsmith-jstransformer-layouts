@@ -22,4 +22,5 @@ describe('metalsmith-jstransformer', function () {
   test('include')
   test('multiple')
   test('inherited')
+  test('recursive')
 })
