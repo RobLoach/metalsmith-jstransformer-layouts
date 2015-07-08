@@ -21,4 +21,5 @@ describe('metalsmith-jstransformer', function () {
   test('basic')
   test('include')
   test('multiple')
+  test('inherited')
 })

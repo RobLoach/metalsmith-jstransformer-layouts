@@ -16,8 +16,7 @@ function getTransformer (name) {
   if (listOfJsTransformers.indexOf(name) >= 0) {
     try {
       transformers[name] = jstransformer(require('jstransformer-' + name))
-    }
-    catch (e) {
+    } catch (e) {
       transformers[name] = false
     }
   } else {
@@ -28,47 +27,41 @@ function getTransformer (name) {
 
 module.exports = function (opts) {
   return function (files, metalsmith, done) {
-    var layouts = {}
-    var processFiles = []
-    var file = ''
-    var layout = ''
-
     // Retrieve all layouts.
-    for (file in files) {
-      layout = files[file].layout
-      // Ensure the layout exists.
-      if (layout && !layouts[layout] && files[layout]) {
-        // Remove it from the Metalsmith database, and add it to the layouts.
-        layouts[layout] = files[layout]
-        processFiles.push(file)
-        delete files[layout]
-      }
-    }
+    for (var filename in files) {
+      // Find the current file's given layout.
+      var file = files[filename]
+      var layoutName = file.layout
+      // Loop through each of the file's layouts, allowing inherited layouts.
+      while (layoutName && files[layoutName]) {
+        var layout = files[layoutName]
+        var extensions = layoutName.split('.')
+        if (extensions.length > 1) {
+          // Retrieve the transformer.
+          var transformer = getTransformer(extensions[1])
+          if (transformer) {
+            // Get the layout input and construct the layout options.
+            var filepath = path.join(metalsmith._directory, metalsmith._source, layoutName)
+            // We want to render with the layout's original content, rather than its own rendering.
+            var input = layout.originalcontents || layout.contents
+            // Build the options/locals.
+            var locals = extend({}, metalsmith.metadata(), layout, file, {
+              contents: files[filename].contents.toString(),
+              filename: filepath
+            })
+            var output = transformer.render(input.toString(), locals, locals)
+            // Keep a hold of the original content of the file, in case we want to render with it again.
+            if (!files[filename].originalcontents) {
+              files[filename].originalcontents = files[filename].contents
+            }
+            // Update the output of the file.
+            files[filename].contents = new Buffer(output.body)
 
-    // Process all content through their respective layouts.
-    for (var i in processFiles) {
-      file = processFiles[i]
-      var layoutName = files[file].layout
-      var extensions = layoutName.split('.')
-      layout = layouts[layoutName]
-      if (extensions.length > 1) {
-        // Retrieve the transformer.
-        var transformer = getTransformer(extensions[1])
-        if (transformer) {
-          // Get the layout input and construct the layout options.
-          var filename = path.join(metalsmith._directory, metalsmith._source, file)
-          var input = layout.contents.toString()
-          var locals = extend({}, layout, files[file], {
-            contents: files[file].contents.toString(),
-            filename: filename
-          })
-          var output = transformer.render(input, locals, locals)
-          files[file].contents = new Buffer(output.body)
-
-          // TODO: Recursive layouts? For example... layout: _layout.html-minifier.jade
-          // TODO: Inherited layouts? For example... layout: _layout.jade with a layout: _parent-layout.jade definition itself.
-          // TODO: Retrieve the options from the JSTransformer name. No engine option conflicts.
+            // TODO: Recursive layouts? For example... layout: _layout.html-minifier.jade
+            // TODO: Retrieve the options from the JSTransformer name. No engine option conflicts.
+          }
         }
+        layoutName = files[layoutName].layout
       }
     }
 
