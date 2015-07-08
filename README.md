@@ -1,4 +1,4 @@
-# Metalsmith JSTransformer Layouts Plugin [![NPM version](https://img.shields.io/npm/v/metalsmith-jstransformer-layouts.svg)](https://www.npmjs.org/package/metalsmith-jstransformer-layouts)
+# Metalsmith JSTransformer Layouts [![NPM version](https://img.shields.io/npm/v/metalsmith-jstransformer-layouts.svg)](https://www.npmjs.org/package/metalsmith-jstransformer-layouts)
 
 [![Build Status](https://img.shields.io/travis/RobLoach/metalsmith-jstransformer-layouts/master.svg)](https://travis-ci.org/RobLoach/metalsmith-jstransformer-layouts)
 [![Dependency Status](https://david-dm.org/RobLoach/metalsmith-jstransformer-layouts.png)](https://david-dm.org/RobLoach/metalsmith-jstransformer-layouts)
