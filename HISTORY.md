@@ -1,8 +1,9 @@
 # Changelog
 
-## v0.2.0: Unreleased
+## v0.2.0: 2015-07-08
 
 - Added [`metalsmith-jstransformer`](https://github.com/RobLoach/metalsmith-jstransformer) test
+- Switched to [`inputformat-to-jstranformer`](https://github.com/jstransformers/inputformat-to-jstransformer) to load the JSTransformer
 
 ## v0.1.0: 2015-07-07
 

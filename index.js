@@ -1,27 +1,20 @@
 var jstransformer = require('jstransformer')
-var listOfJsTransformers = require('list-of-jstransformers')
+var toTransformer = require('inputformat-to-jstransformer')
 var extend = require('extend')
 var path = require('path')
 var transformers = {}
 
 /**
- * Get the transformer from the given name.
+ * Retrieve the JSTransformer from the given name.
  *
- * @return The JSTransformer; null if it doesn't exist.
+ * @return The JSTransformer; false if it doesn't exist.
  */
 function getTransformer (name) {
-  if (transformers[name]) {
+  if (name in transformers) {
     return transformers[name]
   }
-  if (listOfJsTransformers.indexOf(name) >= 0) {
-    try {
-      transformers[name] = jstransformer(require('jstransformer-' + name))
-    } catch (e) {
-      transformers[name] = false
-    }
-  } else {
-    transformers[name] = false
-  }
+  var transformer = toTransformer(name)
+  transformers[name] = transformer ? jstransformer(transformer) : false
   return transformers[name]
 }
 
