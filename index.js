@@ -14,7 +14,12 @@ function getTransformer (name) {
     return transformers[name]
   }
   if (listOfJsTransformers.indexOf(name) >= 0) {
-    transformers[name] = jstransformer(require('jstransformer-' + name))
+    try {
+      transformers[name] = jstransformer(require('jstransformer-' + name))
+    }
+    catch (e) {
+      transformers[name] = false
+    }
   } else {
     transformers[name] = false
   }
