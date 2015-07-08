@@ -1,5 +1,9 @@
 # Changelog
 
+## x.x.x: Unreleased
+
+- Updated dependencies
+
 ## v0.2.0: 2015-07-08
 
 - Added [`metalsmith-jstransformer`](https://github.com/RobLoach/metalsmith-jstransformer) test
