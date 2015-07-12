@@ -37,7 +37,7 @@ module.exports = function (opts) {
     /**
      * Compile the given layout and store it in templates.
      */
-    function compileLayout(layout, done) {
+    function compileLayout (layout, done) {
       var transform = path.extname(layout).substring(1)
       transform = getTransformer(transform)
       if (transform) {
@@ -58,7 +58,7 @@ module.exports = function (opts) {
     /**
      * Render the given file in its layout templates.
      */
-    function renderContent(file, done) {
+    function renderContent (file, done) {
       var layoutName = files[file].layout
       while (layoutName && templates[layoutName]) {
         // Build the options/locals.

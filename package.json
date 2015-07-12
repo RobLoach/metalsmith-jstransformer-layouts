@@ -6,8 +6,7 @@
     "index.js"
   ],
   "scripts": {
-    "standard index.js test/index.js;": "F",
-    "test": " mocha --no-timeouts"
+    "test": "standard index.js test/index.js; mocha --no-timeouts"
   },
   "repository": {
     "type": "git",

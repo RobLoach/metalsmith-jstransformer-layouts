@@ -11,19 +11,9 @@
 
 ## Usage
 
-Within the metadata of files in your `src` directory, declare which layout to use:
+Use the extension of the layout file to declare which template engine is being used for the templates:
 
-#### src/index.html
-``` yaml
----
-layout: _layout.jade
----
-<p>This is my site!</p>
-```
-
-Use the extension of the layout file to declare the template engine:
-
-#### src/_layout.jade
+#### src/layouts/_default.jade
 ``` jade
 ---
 pretty: true
@@ -33,6 +23,16 @@ html
   head
     title My Site
   body!= contents
+```
+
+Within the metadata of content in your `src` directory, declare which layout to use:
+
+#### src/index.html
+``` yaml
+---
+layout: layouts/_default.jade
+---
+<p>This is my site!</p>
 ```
 
 #### Result
