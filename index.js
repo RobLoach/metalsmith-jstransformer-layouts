@@ -2,77 +2,84 @@ var jstransformer = require('jstransformer')
 var toTransformer = require('inputformat-to-jstransformer')
 var extend = require('extend')
 var path = require('path')
-var transformers = {}
-
-/**
- * Retrieve the JSTransformer from the given name.
- *
- * @return The JSTransformer; false if it doesn't exist.
- */
-function getTransformer (name) {
-  if (name in transformers) {
-    return transformers[name]
-  }
-  var transformer = toTransformer(name)
-  transformers[name] = transformer ? jstransformer(transformer) : false
-  return transformers[name]
-}
+var async = require('async')
 
 module.exports = function (opts) {
+  var transformers = {}
+
+  /**
+   * Retrieve the JSTransformer from the given name.
+   *
+   * @return The JSTransformer; false if it doesn't exist.
+   */
+  function getTransformer (name) {
+    if (name in transformers) {
+      return transformers[name]
+    }
+    var transformer = toTransformer(name)
+    transformers[name] = transformer ? jstransformer(transformer) : false
+    return transformers[name]
+  }
+
   return function (files, metalsmith, done) {
     // Retrieve all layouts.
+    var layouts = []
+    var content = []
+    var templates = {}
     for (var filename in files) {
-      // Find the current file's given layout.
-      var file = files[filename]
-      var layoutName = file.layout
-
-      // Back up the file's original content is available so that we can process on it when needed.
-      if (!file.originalcontents) {
-        files[filename].originalcontents = file.contents
-      }
-
-      // Loop through each of the file's layouts, allowing inherited layouts.
-      while (layoutName && files[layoutName]) {
-        var layout = files[layoutName]
-
-        // Save the layout's original content, and start from it.
-        if (!layout.originalcontents) {
-          files[layoutName].originalcontents = layout.contents
-        }
-        var content = files[layoutName].originalcontents.toString()
-
-        // Iterate through each extension and process them with JSTransformers.
-        var extensions = layoutName.split('.')
-        for (var i = extensions.length - 1; i > 0; i--) {
-          // Retrieve the transformer.
-          var transformer = getTransformer(extensions[i])
-          if (transformer) {
-            // Get the layout input and construct the layout options.
-            var filepath = path.join(metalsmith._directory, metalsmith._source, layoutName)
-            // Build the options/locals.
-            var locals = extend({}, metalsmith.metadata(), layout, file, {
-              contents: files[filename].contents.toString(),
-              filename: filepath
-            })
-            var output = transformer.render(content, locals, locals)
-            // Update the content of the file.
-            content = output.body
-
-            // TODO: Retrieve the options from the JSTransformer name. No engine option conflicts.
-          } else {
-            // Since the transformer is not available, skip the rest of the extensions.
-            break
-          }
-        }
-
-        // Save the file's new content string in a buffer.
-        files[filename].contents = new Buffer(content)
-
-        // Move onto the file's parent layout.
-        layoutName = files[layoutName].layout
+      var layoutName = files[filename].layout
+      if (layoutName && layoutName in files) {
+        layouts.push(layoutName)
+        content.push(filename)
       }
     }
 
-    done()
+    /**
+     * Compile the given layout and store it in templates.
+     */
+    function compileLayout(layout, done) {
+      var transform = path.extname(layout).substring(1)
+      transform = getTransformer(transform)
+      if (transform) {
+        var options = extend({}, files[layout], {
+          filename: path.join(metalsmith._directory, metalsmith._source, layout)
+        })
+        transform.compileAsync(files[layout].contents.toString(), options).then(function (results) {
+          templates[layout] = results
+          done()
+        }, function (err) {
+          done(err)
+        })
+      } else {
+        done('The layout ' + layout + ' has an unsupported transform of ' + transform + '.')
+      }
+    }
+
+    /**
+     * Render the given file in its layout templates.
+     */
+    function renderContent(file, done) {
+      var layoutName = files[file].layout
+      while (layoutName && templates[layoutName]) {
+        // Build the options/locals.
+        var locals = extend({}, metalsmith.metadata(), files[layoutName], files[file], {
+          contents: files[file].contents.toString(),
+          filename: path.join(metalsmith._directory, metalsmith._source, layoutName)
+        })
+        var output = templates[layoutName].fn(locals)
+        files[file].contents = output
+        layoutName = files[layoutName].layout
+      }
+      done()
+    }
+
+    // Compile all layouts.
+    async.map(layouts, compileLayout, function (err) {
+      if (err) {
+        done(err)
+      } else {
+        async.mapSeries(content, renderContent, done)
+      }
+    })
   }
 }

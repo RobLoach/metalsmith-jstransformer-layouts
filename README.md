@@ -11,33 +11,9 @@
 
 ## Usage
 
-### CLI
-
-If you are using the command-line version of Metalsmith, you can install via npm, and then add the `metalsmith-jstransformer` key to your `metalsmith.json` file:
-
-```json
-{
-  "plugins": {
-    "metalsmith-jstransformer-layouts": {}
-  }
-}
-```
-
-### JavaScript
-
-If you are using the JS Api for Metalsmith, then you can require the module and add it to your `.use()` directives:
-
-```js
-var layouts = require('metalsmith-jstransformer-layouts');
-
-metalsmith.use(layouts());
-```
-
-### Convention
-
 Within the metadata of files in your `src` directory, declare which layout to use:
 
-#### index.html
+#### src/index.html
 ``` yaml
 ---
 layout: _layout.jade
@@ -47,7 +23,7 @@ layout: _layout.jade
 
 Use the extension of the layout file to declare the template engine:
 
-#### _layout.jade
+#### src/_layout.jade
 ``` jade
 ---
 pretty: true
@@ -70,6 +46,28 @@ html
     <p>This is my site!</p>
   </body>
 </html>
+```
+
+### CLI
+
+If you are using the command-line version of Metalsmith, you can install via npm, and then add the `metalsmith-jstransformer` key to your `metalsmith.json` file:
+
+```json
+{
+  "plugins": {
+    "metalsmith-jstransformer-layouts": {}
+  }
+}
+```
+
+### JavaScript
+
+If you are using the JS Api for Metalsmith, then you can require the module and add it to your `.use()` directives:
+
+```js
+var layouts = require('metalsmith-jstransformer-layouts');
+
+metalsmith.use(layouts());
 ```
 
 ## License

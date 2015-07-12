@@ -1,8 +1,8 @@
 # Changelog
 
-## x.x.x: Unreleased
+## 0.3.0: 2015-07-12
 
-- Updated dependencies
+- Added `.compileAsync()` support to pre-compile the layouts
 
 ## v0.2.0: 2015-07-08
 
