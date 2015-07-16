@@ -4,23 +4,24 @@ var extend = require('extend')
 var path = require('path')
 var async = require('async')
 
-module.exports = function (opts) {
-  var transformers = {}
+var transformers = {}
 
-  /**
-   * Retrieve the JSTransformer from the given name.
-   *
-   * @return The JSTransformer; false if it doesn't exist.
-   */
-  function getTransformer (name) {
-    if (name in transformers) {
-      return transformers[name]
-    }
-    var transformer = toTransformer(name)
-    transformers[name] = transformer ? jstransformer(transformer) : false
+/**
+ * Retrieve the JSTransformer from the given name.
+ *
+ * @return The JSTransformer; false if it doesn't exist.
+ */
+function getTransformer (name) {
+  if (name in transformers) {
     return transformers[name]
   }
+  var transformer = toTransformer(name)
+  transformers[name] = transformer ? jstransformer(transformer) : false
+  return transformers[name]
+}
 
+module.exports = function (opts) {
+  // Execute the plugin.
   return function (files, metalsmith, done) {
     // Retrieve all layouts.
     var layouts = []
@@ -78,6 +79,7 @@ module.exports = function (opts) {
       if (err) {
         done(err)
       } else {
+        // Now that the layouts are available, render the content.
         async.mapSeries(content, renderContent, done)
       }
     })
