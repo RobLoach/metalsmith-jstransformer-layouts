@@ -9,45 +9,6 @@
 
     npm install --save metalsmith-jstransformer-layouts
 
-## Usage
-
-Use the extension of the layout file to declare which template engine is being used for the templates:
-
-#### src/layouts/_default.jade
-``` jade
----
-pretty: true
----
-doctype html
-html
-  head
-    title My Site
-  body!= contents
-```
-
-Within the metadata of content in your `src` directory, declare which layout to use:
-
-#### src/index.html
-``` yaml
----
-layout: layouts/_default.jade
----
-<p>This is my site!</p>
-```
-
-#### Result
-``` html
-<!doctype html>
-<html>
-  <head>
-    <title>My Site</title>
-  </head>
-  <body>
-    <p>This is my site!</p>
-  </body>
-</html>
-```
-
 ### CLI
 
 If you are using the command-line version of Metalsmith, you can install via npm, and then add the `metalsmith-jstransformer` key to your `metalsmith.json` file:
@@ -68,6 +29,44 @@ If you are using the JS Api for Metalsmith, then you can require the module and 
 var layouts = require('metalsmith-jstransformer-layouts');
 
 metalsmith.use(layouts());
+```
+## Usage
+
+Use the extension of the layout file to declare which template engine is being used for the templates:
+
+#### `src/layouts/_default.jade`
+``` jade
+---
+pretty: true
+---
+doctype html
+html
+  head
+    title My Site
+  body!= contents
+```
+
+Within the metadata of content in your `src` directory, declare which layout to use:
+
+#### `src/index.html`
+``` yaml
+---
+layout: layouts/_default.jade
+---
+<p>This is my site!</p>
+```
+
+#### Result
+``` html
+<!doctype html>
+<html>
+  <head>
+    <title>My Site</title>
+  </head>
+  <body>
+    <p>This is my site!</p>
+  </body>
+</html>
 ```
 
 ## License
