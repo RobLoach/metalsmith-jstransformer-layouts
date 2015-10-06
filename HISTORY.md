@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.2
+
+- Fixed output to be a Buffer
+  - [#5](https://github.com/RobLoach/metalsmith-jstransformer-layouts/pull/5) by [@klaftertief](https://github.com/klaftertief)
+
 ## 0.3.1: 2015-09-21
 
 - Updated dependencies

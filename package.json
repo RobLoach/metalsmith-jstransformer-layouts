@@ -1,12 +1,12 @@
 {
   "name": "metalsmith-jstransformer-layouts",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Metalsmith JSTransformer Templates Plugin",
   "files": [
     "index.js"
   ],
   "scripts": {
-    "test": "standard index.js test/index.js; mocha --no-timeouts"
+    "test": "mocha --no-timeouts && standard index.js test/index.js"
   },
   "repository": {
     "type": "git",
