@@ -68,7 +68,7 @@ module.exports = function (opts) {
           filename: path.join(metalsmith._directory, metalsmith._source, layoutName)
         })
         var output = templates[layoutName].fn(locals)
-        files[file].contents = output
+        files[file].contents = new Buffer(output)
         layoutName = files[layoutName].layout
       }
       done()
