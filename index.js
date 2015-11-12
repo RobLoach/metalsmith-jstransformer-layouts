@@ -74,13 +74,30 @@ module.exports = function (opts) {
       done()
     }
 
+    /**
+     * Delete the given file from the files array.
+     */
+    function deleteFile (file, done) {
+      if (file in files) {
+        delete files[file]
+      }
+      done()
+    }
+
     // Compile all layouts.
     async.map(layouts, compileLayout, function (err) {
       if (err) {
         done(err)
       } else {
         // Now that the layouts are available, render the content.
-        async.mapSeries(content, renderContent, done)
+        async.mapSeries(content, renderContent, function (err) {
+          if (err) {
+            done(err)
+          } else {
+            // All layouts have been rendered, get rid of them.
+            async.map(layouts, deleteFile, done)
+          }
+        })
       }
     })
   }
