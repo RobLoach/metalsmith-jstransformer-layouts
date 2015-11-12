@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.x
+
+- Switched to `xo` for code standards
+
 ## v0.4.0
 
 - Now deletes layouts after rendering
