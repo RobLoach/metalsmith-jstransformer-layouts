@@ -6,7 +6,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --no-timeouts && standard index.js test/index.js"
+    "test": "mocha --no-timeouts && xo --space --no-semicolon"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,6 @@
     "metalsmith": "^2.0.1",
     "metalsmith-jstransformer": "^0.5.1",
     "mocha": "^2.3.3",
-    "standard": "^5.3.1"
+    "xo": "^0.10.1"
   }
 }

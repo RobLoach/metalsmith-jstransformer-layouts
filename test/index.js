@@ -7,7 +7,7 @@ var Metalsmith = require('metalsmith')
  * @param name - The folder name for the test fixtures.
  * @param plugins - An associative array of plugin key name, and options for it.
  */
-function test (name, plugins) {
+function test(name, plugins) {
   /* globals it describe */
   it(name, function (done) {
     // Ensure we load the Metalsmith JSTransformer Layouts plugin.
@@ -18,9 +18,11 @@ function test (name, plugins) {
 
     // Construct Metalsmith with a clean build directory.
     var testPath = 'test/fixtures/' + name
-    var metalsmith = Metalsmith(testPath)
+    var metalsmith = new Metalsmith(testPath)
     for (var plugin in plugins || {}) {
-      metalsmith.use(require(plugin)(plugins[plugin]))
+      if (plugins.hasOwnProperty(plugin)) {
+        metalsmith.use(require(plugin)(plugins[plugin]))
+      }
     }
     metalsmith.build(function (err) {
       if (err) {

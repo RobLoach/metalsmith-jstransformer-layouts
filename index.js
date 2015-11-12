@@ -11,7 +11,7 @@ var transformers = {}
  *
  * @return The JSTransformer; false if it doesn't exist.
  */
-function getTransformer (name) {
+function getTransformer(name) {
   if (name in transformers) {
     return transformers[name]
   }
@@ -20,7 +20,7 @@ function getTransformer (name) {
   return transformers[name]
 }
 
-module.exports = function (opts) {
+module.exports = function () {
   // Execute the plugin.
   return function (files, metalsmith, done) {
     // Retrieve all layouts.
@@ -28,17 +28,19 @@ module.exports = function (opts) {
     var content = []
     var templates = {}
     for (var filename in files) {
-      var layoutName = files[filename].layout
-      if (layoutName && layoutName in files) {
-        layouts.push(layoutName)
-        content.push(filename)
+      if (files.hasOwnProperty(filename)) {
+        var layoutName = files[filename].layout
+        if (layoutName && layoutName in files) {
+          layouts.push(layoutName)
+          content.push(filename)
+        }
       }
     }
 
     /**
      * Compile the given layout and store it in templates.
      */
-    function compileLayout (layout, done) {
+    function compileLayout(layout, done) {
       var transform = path.extname(layout).substring(1)
       transform = getTransformer(transform)
       if (transform) {
@@ -59,7 +61,7 @@ module.exports = function (opts) {
     /**
      * Render the given file in its layout templates.
      */
-    function renderContent (file, done) {
+    function renderContent(file, done) {
       var layoutName = files[file].layout
       while (layoutName && templates[layoutName]) {
         // Build the options/locals.
@@ -77,7 +79,7 @@ module.exports = function (opts) {
     /**
      * Delete the given file from the files array.
      */
-    function deleteFile (file, done) {
+    function deleteFile(file, done) {
       if (file in files) {
         delete files[file]
       }
