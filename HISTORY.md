@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0
+
+- Now deletes layouts after rendering
+
 ## v0.3.2
 
 - Fixed output to be a Buffer
