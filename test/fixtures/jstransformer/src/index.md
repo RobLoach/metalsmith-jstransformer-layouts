@@ -1,5 +1,5 @@
 ---
-layout: _layout.jade
+layout: layouts/_layout.jade
 title: Hello World
 ---
 

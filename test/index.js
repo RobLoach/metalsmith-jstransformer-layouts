@@ -40,7 +40,18 @@ describe('metalsmith-jstransformer', function () {
   test('multiple')
   test('inherited')
   test('sample')
+  test('convention-defaultLayout')
   test('jstransformer', {
     'metalsmith-jstransformer': {}
+  })
+  test('option-pattern', {
+    '..': {
+      pattern: '_*'
+    }
+  })
+  test('option-default', {
+    '..': {
+      default: 'layouts/_default.jade'
+    }
   })
 })

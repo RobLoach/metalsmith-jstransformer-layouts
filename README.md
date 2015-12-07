@@ -30,11 +30,13 @@ var layouts = require('metalsmith-jstransformer-layouts');
 
 metalsmith.use(layouts());
 ```
-## Usage
+
+## Example
 
 Use the extension of the layout file to declare which template engine is being used for the templates:
 
-#### `src/layouts/_default.jade`
+##### `src/layouts/default.jade`
+
 ``` jade
 ---
 pretty: true
@@ -48,10 +50,11 @@ html
 
 Within the metadata of content in your `src` directory, declare which layout to use:
 
-#### `src/index.html`
+##### `src/index.html`
+
 ``` yaml
 ---
-layout: layouts/_default.jade
+layout: default.jade
 ---
 <p>This is my site!</p>
 ```
@@ -67,6 +70,80 @@ layout: layouts/_default.jade
     <p>This is my site!</p>
   </body>
 </html>
+```
+
+## Configuration
+
+The plugin introduces the following file convention and configuration options.
+
+### File Convention
+
+Each document should have a file extension of which [JSTransformer](https://github.com/jstransformers/) engine it uses. It can also contain the following metadata:
+
+#### `layout`
+
+A string which represents the layout the document should use when rendering. This is absolute path from Metalsmith's `src` path. If not provided, will use the default layout, if available.
+
+##### `src/content/article.md`
+
+``` md
+---
+layout: layouts/default.twig
+---
+This is a Markdown file, rendering within a Twig.js layout.
+```
+
+#### `defaultLayout`
+
+A boolean to state whether the given document should be the default layout for all content. Overrides the plugin option [`default`](#default).
+
+##### src/layouts/default.twig
+
+``` twig
+---
+defaultLayout: true
+---
+<!doctype html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    {{ contents }}
+  </body>
+</html>
+```
+
+### Options
+
+You can pass options to `metalsmith-jstransformer-layouts` with either the [JavaScript API](https://github.com/segmentio/metalsmith#api) or [CLI](https://github.com/segmentio/metalsmith#cli).
+
+### `default`
+
+When provided, will set the default layout for all content. Can be overriden with the `layout` key in each file's YAML frontmatter.
+
+```json
+{
+  "plugins": {
+    "metalsmith-jstransformer-layouts": {
+      "default": "layout/mylayout.swig"
+    }
+  }
+}
+```
+
+### `pattern`
+
+The discovery pattern used to find layouts. Defaults to `layouts/*`.
+
+```json
+{
+  "plugins": {
+    "metalsmith-jstransformer-layouts": {
+      "pattern": "layouts/**"
+    }
+  }
+}
 ```
 
 ## License
