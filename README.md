@@ -54,7 +54,7 @@ Within the metadata of content in your `src` directory, declare which layout to 
 
 ``` yaml
 ---
-layout: default.jade
+layout: layouts/default.jade
 ---
 <p>This is my site!</p>
 ```
