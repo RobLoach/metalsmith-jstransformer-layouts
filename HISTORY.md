@@ -1,8 +1,9 @@
 # Changelog
 
-## v0.4.x
+## v0.5.x
 
 - Switched to `xo` for code standards
+- Moved to a layouts `pattern` for layout discovery
 
 ## v0.4.0
 
