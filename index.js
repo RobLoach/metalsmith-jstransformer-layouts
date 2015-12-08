@@ -26,9 +26,6 @@ function getTransformer(name) {
  *
  * @param {String or Object} options
  *   @property {String} default (optional)
- *   @property {String} directory (optional)
- *   @property {String} engine
- *   @property {String} partials (optional)
  *   @property {String} pattern (optional)
  * @return {Function}
  */
