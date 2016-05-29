@@ -1,6 +1,7 @@
 var jstransformer = require('jstransformer')
 var toTransformer = require('inputformat-to-jstransformer')
 var extend = require('extend')
+var fs = require('fs')
 var path = require('path')
 var async = require('async')
 var minimatch = require('minimatch')
@@ -33,37 +34,43 @@ function plugin(opts) {
   // Execute the plugin.
   return function (files, metalsmith, done) {
     // Prepare the options.
-    var pattern = opts.pattern || 'layouts/**'
+    var directory = opts.directory || 'layouts'
+    var pattern = opts.pattern
+    var includes = opts.includes || 'includes/**'
     var defaultLayout = opts.default
+    var ext = opts.ext || ''
 
     // Retrieve all layouts.
     var templates = {}
-    var filesKeys = Object.keys(files)
-    var layouts = minimatch.match(filesKeys, pattern, {matchBase: true})
+    var filesKeys = minimatch.match(Object.keys(files), pattern, {matchBase: true})
+    var layoutKeys = fs.readdirSync(path.join(metalsmith._directory, directory))
+    var layouts = minimatch.match(layoutKeys, "!" + includes, {matchBase: true})
 
     /**
      * Compile the given layout and store it in templates.
      */
     function compileLayout(layout, done) {
       // Find which JSTransformer to compile with.
-      var transform = path.extname(layout).substring(1)
+      var transform = path.extname(layout).substring(1) || ext.substring(1)
       transform = getTransformer(transform)
       if (transform) {
+        var filename = path.join(metalsmith._directory, directory, layout)
+        filename = path.extname(filename) ? filename : filename + ext;
         // Retrieve the options for the JSTransformer.
         var options = extend({}, files[layout], {
-          filename: path.join(metalsmith._directory, metalsmith._source, layout)
+          filename: filename
         })
 
         // Compile the content.
-        var content = files[layout].contents.toString()
+        var content = fs.readFileSync(filename).toString()
         transform.compileAsync(content, options).then(function (results) {
           // Wire up the template for the layout.
           templates[layout] = results
 
           // Set the layout as the default layout, if desired.
-          if (files[layout].defaultLayout) {
-            defaultLayout = layout
-          }
+          // if (files[layout].defaultLayout) {
+          //   defaultLayout = layout
+          // }
 
           // Finished compiling the layout into a template.
           done()
@@ -80,22 +87,21 @@ function plugin(opts) {
      */
     function renderContent(file, done) {
       // Only render content, skip rendering layouts.
-      if (!(file in layouts)) {
-        var layoutName = files[file].layout || defaultLayout
-        while (layoutName && templates[layoutName]) {
-          // Build the options/locals.
-          var locals = extend({}, metalsmith.metadata(), files[layoutName], files[file], {
-            contents: files[file].contents.toString(),
-            filename: path.join(metalsmith._directory, metalsmith._source, layoutName)
-          })
+      var layoutName = files[file].layout || defaultLayout
+      layoutName = path.extname(layoutName) ? layoutName : layoutName + ext;
+      if (layoutName && templates[layoutName]) {
+        // Build the options/locals.
+        var locals = extend({}, metalsmith.metadata(), files[file], {
+          contents: files[file].contents.toString(),
+          filename: path.join(metalsmith._directory, metalsmith._source, layoutName)
+        })
 
-          // Render the content using the template function and options.
-          var output = templates[layoutName].fn(locals)
-          files[file].contents = new Buffer(output)
+        // Render the content using the template function and options.
+        var output = templates[layoutName].fn(locals)
+        files[file].contents = new Buffer(output)
 
-          // Allow for recursive explicit layouts.
-          layoutName = files[layoutName].layout
-        }
+        // Allow for recursive explicit layouts.
+        // layoutName = files[layoutName].layout
       }
       done()
     }
@@ -121,7 +127,8 @@ function plugin(opts) {
             done(err)
           } else {
             // All layouts have been rendered, get rid of them.
-            async.map(layouts, deleteFile, done)
+            // async.map(layouts, deleteFile, done)
+            done()
           }
         })
       }
