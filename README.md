@@ -1,3 +1,7 @@
+# Deprecated
+
+This has been merged into [metalsmith-jstransformer](https://github.com/RobLoach/metalsmith-jstransformer) in order to ease usage.
+
 # Metalsmith JSTransformer Layouts [![NPM version](https://img.shields.io/npm/v/metalsmith-jstransformer-layouts.svg)](https://www.npmjs.org/package/metalsmith-jstransformer-layouts)
 
 [![Build Status](https://img.shields.io/travis/RobLoach/metalsmith-jstransformer-layouts/master.svg)](https://travis-ci.org/RobLoach/metalsmith-jstransformer-layouts)
