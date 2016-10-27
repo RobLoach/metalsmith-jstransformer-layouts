@@ -1,12 +1,13 @@
 {
   "name": "metalsmith-jstransformer-layouts",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Metalsmith JSTransformer Templates Plugin",
   "files": [
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --no-timeouts && xo --space --no-semicolon"
+    "test": "mocha --no-timeouts",
+    "posttest": "xo --space --no-semicolon --ignores=test/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,20 +23,20 @@
   },
   "homepage": "https://github.com/RobLoach/metalsmith-jstransformer-layouts",
   "dependencies": {
-    "async": "^1.4.2",
+    "async": "^2.1.2",
     "extend": "^3.0.0",
-    "inputformat-to-jstransformer": "^1.1.4",
-    "jstransformer": "0.0.4",
-    "minimatch": "^3.0.0"
+    "inputformat-to-jstransformer": "^1.1.8",
+    "jstransformer": "1.0.0",
+    "minimatch": "^3.0.3"
   },
   "devDependencies": {
     "assert-dir-equal": "^1.0.1",
-    "jstransformer-jade": "^0.1.0",
+    "jstransformer-jade": "^0.1.1",
     "jstransformer-marked": "^1.0.1",
     "jstransformer-nunjucks": "^0.2.0",
-    "metalsmith": "^2.0.1",
-    "metalsmith-jstransformer": "^0.5.1",
-    "mocha": "^2.3.3",
-    "xo": "^0.11.2"
+    "metalsmith": "^2.2.0",
+    "metalsmith-jstransformer": "^0.7.2",
+    "mocha": "^3.1.2",
+    "xo": "^0.17.0"
   }
 }

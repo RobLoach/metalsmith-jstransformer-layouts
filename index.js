@@ -1,7 +1,7 @@
+var path = require('path')
 var jstransformer = require('jstransformer')
 var toTransformer = require('inputformat-to-jstransformer')
 var extend = require('extend')
-var path = require('path')
 var async = require('async')
 var minimatch = require('minimatch')
 

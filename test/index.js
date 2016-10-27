@@ -20,7 +20,7 @@ function test(name, plugins) {
     var testPath = 'test/fixtures/' + name
     var metalsmith = new Metalsmith(testPath)
     for (var plugin in plugins || {}) {
-      if (plugins.hasOwnProperty(plugin)) {
+      if (plugins[plugin]) {
         metalsmith.use(require(plugin)(plugins[plugin]))
       }
     }
